@@ -30,8 +30,28 @@ led2 = 22
 GPIO.setup(led2, GPIO.OUT, initial = GPIO.LOW)
 
 def display():
-    if count // 4:
-        #Turn on led2
+    tmp_count = count
+    if (tmp_count // 4):
+        #Turn on 2^2 led (led2)
+        GPIO.output(led2, GPIO.HIGH)
+        tmp_count = tmp_count % 4
+    else:
+        GPIO.output(led2, GPIO.LOW)
+    
+    if tmp_count //2:
+        GPIO.output(led1, GPIO.HIGH)
+        tmp_count = tmp_count % 2
+    else:
+        GPIO.output(led1, GPIO.LOW)
+    
+    if tmp_count:
+        GPIO.output(led0, GPIO.HIGH)
+    else:
+        GPIO.output(led0, GPIO.LOW)
+
+
+    
+
     
 
 # Logic that you write
