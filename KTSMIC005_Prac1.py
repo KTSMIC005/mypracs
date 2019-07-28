@@ -17,7 +17,7 @@ GPIO.setmode(GPIO.BCM)
 
 count = 0
 up_btn = 23
-down_btna = 24
+down_btn = 24
 GPIO.setup([up_btn, down_btn], GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
 
@@ -26,25 +26,27 @@ led1 = 27
 led2 = 22
 GPIO.setup([led0, led1, led2], GPIO.OUT, initial = GPIO.LOW)
 
-def display():
-    tmp_count = count
-    if (tmp_count // 4):
+def display(count):
+    count 
+    if (count // 4):
         #Turn on 2^2 led (led2)
         GPIO.output(led2, GPIO.HIGH)
-        tmp_count = tmp_count % 4
+        count = count % 4
     else:
         GPIO.output(led2, GPIO.LOW)
     
-    if tmp_count //2:
+    if count //2:
         GPIO.output(led1, GPIO.HIGH)
-        tmp_count = tmp_count % 2
+        count = count % 2
     else:
         GPIO.output(led1, GPIO.LOW)
     
-    if tmp_count:
+    if count:
         GPIO.output(led0, GPIO.HIGH)
     else:
         GPIO.output(led0, GPIO.LOW)
+
+    return count
 
 
     
@@ -53,7 +55,17 @@ def display():
 
 # Logic that you write
 def main():
-    #pin 23 is button 1 hi/low
+    GPIO.add_event_detect([up_btn,down_btn], GPIO.RISING) 
+    global count
+    if GPIO.event_detected(up_btn):
+        #pin 23 is up button. HIGH connected
+        print('Button pressed')
+        count +=1
+    
+    if GPIO.event_detected(down_btn):
+        #pin 23 is up button. HIGH connected
+        print('Button pressed')
+        count -=1
     #pin 24 is  button 2 hi/low
 
     
@@ -65,7 +77,9 @@ def main():
     if count >8:
         count = count%8
     
-    display()
+    display(count)
+
+
 
 
 # Only run the functions if 
