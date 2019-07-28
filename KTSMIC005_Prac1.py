@@ -93,7 +93,7 @@ if __name__ == "__main__":
         print("Exiting gracefully")
         # Turn off your GPIOs here
         GPIO.cleanup()
-    except e:
-        GPIO.cleanup()
-        print("Some other error occurred")
-        print(e.message)
+    # except e:
+    #     GPIO.cleanup()
+    #     print("Some other error occurred")
+    #     print(e.message)
