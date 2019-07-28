@@ -11,7 +11,7 @@ Date: 30 July 2019
 
 # import Relevant Librares
 import RPi.GPIO as GPIO
-import time.sleep as sleep
+import time
 GPIO.setmode(GPIO.BCM)
 
 
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     try:
         while True:
             main()
-            sleep(20)
+            time.sleep(20)
     except KeyboardInterrupt:
         print("Exiting gracefully")
         # Turn off your GPIOs here
