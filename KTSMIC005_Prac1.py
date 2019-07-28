@@ -16,18 +16,15 @@ GPIO.setmode(GPIO.BCM)
 
 
 count = 0
-up_button = 23
-GPIO.setup(up_button, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-down_button = 24
-GPIO.setup(down_button, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+up_btn = 23
+down_btna = 24
+GPIO.setup([up_btn, down_btn], GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
 
 led0 = 17
-GPIO.setup(led0, GPIO.OUT, initial = GPIO.LOW)
 led1 = 27
-GPIO.setup(led1, GPIO.OUT, initial = GPIO.LOW)
 led2 = 22
-GPIO.setup(led2, GPIO.OUT, initial = GPIO.LOW)
+GPIO.setup([led0, led1, led2], GPIO.OUT, initial = GPIO.LOW)
 
 def display():
     tmp_count = count
