@@ -29,8 +29,8 @@ GPIO.setup(led0, GPIO.OUT, initial = GPIO.LOW)
 GPIO.setup(led1, GPIO.OUT, initial = GPIO.LOW)
 GPIO.setup(led2, GPIO.OUT, initial = GPIO.LOW)
 
-GPIO.add_event_detect(up_btn, GPIO.RISING, bouncetime = 200) 
-GPIO.add_event_detect(down_btn, GPIO.RISING, bouncetime = 200) 
+GPIO.add_event_detect(up_btn, GPIO.FALLING, bouncetime = 200) 
+GPIO.add_event_detect(down_btn, GPIO.FALLING, bouncetime = 200) 
 
 def display(count):
     count 
@@ -67,11 +67,13 @@ def main():
         #pin 23 is up button. HIGH connected
         print('Up button pressed')
         count +=1
+        print ("Count is {}".format(count))
     
     if GPIO.event_detected(down_btn):
         #pin 24 is down button. HIGH connected
         print('Down button pressed')
         count -=1
+        print ("Count is {}".format(count))
 
     if count >8:
         count = count % 8
@@ -87,7 +89,7 @@ if __name__ == "__main__":
     try:
         while True:
             main()
-            time.sleep(20)
+            time.sleep(.02)
             
     except KeyboardInterrupt:
         print("Exiting gracefully")

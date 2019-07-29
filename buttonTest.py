@@ -44,7 +44,7 @@ if __name__ == "__main__":
     try:
         while True:
             main()
-            print("off button is {}\n on button is {}".format(GPIO.input(on_btn), GPIO.input(off_btn)))
+            # print("off button is {}\n on button is {}".format(GPIO.input(on_btn), GPIO.input(off_btn)))
             time.sleep(.01)
             
     except KeyboardInterrupt:
