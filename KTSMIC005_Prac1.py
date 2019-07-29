@@ -25,9 +25,9 @@ GPIO.setup(down_btn, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 led0 = 17
 led1 = 27
 led2 = 22
-GPIO.setup(led0, GPIO.OUT, initial = GPIO.LOW)
-GPIO.setup(led1, GPIO.OUT, initial = GPIO.LOW)
-GPIO.setup(led2, GPIO.OUT, initial = GPIO.LOW)
+GPIO.setup(led0, GPIO.OUT, initial = GPIO.HIGH)
+GPIO.setup(led1, GPIO.OUT, initial = GPIO.HIGH)
+GPIO.setup(led2, GPIO.OUT, initial = GPIO.HIGH)
 
 GPIO.add_event_detect(up_btn, GPIO.FALLING, bouncetime = 200) 
 GPIO.add_event_detect(down_btn, GPIO.FALLING, bouncetime = 200) 
