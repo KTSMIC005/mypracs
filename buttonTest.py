@@ -12,8 +12,8 @@ led0 = 22
 GPIO.setup(led0, GPIO.OUT, initial = GPIO.HIGH)
 
 
-GPIO.add_event_detect(on_btn, GPIO.RISING, bouncetime = 200) 
-GPIO.add_event_detect(off_btn, GPIO.RISING, bouncetime = 200) 
+GPIO.add_event_detect(on_btn, GPIO.FALLING, bouncetime = 200) 
+GPIO.add_event_detect(off_btn, GPIO.FALLING, bouncetime = 200) 
 
     
 
