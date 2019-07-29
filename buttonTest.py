@@ -8,7 +8,7 @@ GPIO.setup(on_btn, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(off_btn, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
 
-led0 = 17
+led0 = 4
 GPIO.setup(led0, GPIO.OUT, initial = GPIO.HIGH)
 
 
