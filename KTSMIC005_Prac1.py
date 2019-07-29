@@ -72,9 +72,7 @@ def main():
         #pin 24 is down button. HIGH connected
         print('Button pressed')
         count -=1
-    
 
-    
     if count >8:
         count = count%8
     
@@ -90,6 +88,7 @@ if __name__ == "__main__":
         while True:
             main()
             time.sleep(20)
+            
     except KeyboardInterrupt:
         print("Exiting gracefully")
         # Turn off your GPIOs here
