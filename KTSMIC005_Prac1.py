@@ -18,13 +18,19 @@ GPIO.setmode(GPIO.BCM)
 count = 0
 up_btn = 23
 down_btn = 24
-GPIO.setup([up_btn, down_btn], GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(up_btn, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(down_btn, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
 
 led0 = 17
 led1 = 27
 led2 = 22
-GPIO.setup([led0, led1, led2], GPIO.OUT, initial = GPIO.LOW)
+GPIO.setup(led0, GPIO.OUT, initial = GPIO.LOW)
+GPIO.setup(led1, GPIO.OUT, initial = GPIO.LOW)
+GPIO.setup(led2, GPIO.OUT, initial = GPIO.LOW)
+
+GPIO.add_event_detect(up_btn, GPIO.RISING, bouncetime = 200) 
+GPIO.add_event_detect(down_btn, GPIO.RISING, bouncetime = 200) 
 
 def display(count):
     count 
@@ -55,7 +61,7 @@ def display(count):
 
 # Logic that you write
 def main():
-    GPIO.add_event_detect([up_btn,down_btn], GPIO.RISING) 
+    
     global count
     if GPIO.event_detected(up_btn):
         #pin 23 is up button. HIGH connected
@@ -63,17 +69,12 @@ def main():
         count +=1
     
     if GPIO.event_detected(down_btn):
-        #pin 23 is up button. HIGH connected
+        #pin 24 is down button. HIGH connected
         print('Button pressed')
         count -=1
-    #pin 24 is  button 2 hi/low
-
-    
-    #DoSomething if button is pressed
     
 
-
-
+    
     if count >8:
         count = count%8
     
