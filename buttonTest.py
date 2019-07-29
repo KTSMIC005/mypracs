@@ -2,13 +2,13 @@ import RPi.GPIO as GPIO
 import time
 GPIO.setmode(GPIO.BCM)
 
-on_btn = 2
-off_btn = 3
+on_btn = 17
+off_btn = 27
 GPIO.setup(on_btn, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(off_btn, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
 
-led0 = 4
+led0 = 22
 GPIO.setup(led0, GPIO.OUT, initial = GPIO.HIGH)
 
 
