@@ -33,7 +33,7 @@ GPIO.add_event_detect(up_btn, GPIO.FALLING, bouncetime = 200)
 GPIO.add_event_detect(down_btn, GPIO.FALLING, bouncetime = 200) 
 
 def display(count):
-    count 
+ 
     if (count // 4):
         #Turn on 2^2 led (led2)
         GPIO.output(led2, GPIO.HIGH)
@@ -52,7 +52,6 @@ def display(count):
     else:
         GPIO.output(led0, GPIO.LOW)
 
-    return count
 
 
     
@@ -75,8 +74,10 @@ def main():
         count -=1
         print ("Count is {}".format(count))
 
-    if count >8:
-        count = count % 8
+    if count ==8:
+        count = 0
+    if count <0:
+        count = 0
     
     display(count)
 
