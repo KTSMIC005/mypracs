@@ -65,16 +65,16 @@ def main():
     global count
     if GPIO.event_detected(up_btn):
         #pin 23 is up button. HIGH connected
-        print('Button pressed')
+        print('Up button pressed')
         count +=1
     
     if GPIO.event_detected(down_btn):
         #pin 24 is down button. HIGH connected
-        print('Button pressed')
+        print('Down button pressed')
         count -=1
 
     if count >8:
-        count = count%8
+        count = count % 8
     
     display(count)
 
