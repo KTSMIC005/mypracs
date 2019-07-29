@@ -5,7 +5,7 @@ GPIO.setmode(GPIO.BCM)
 on_btn = 17
 off_btn = 27
 GPIO.setup(on_btn, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-GPIO.setup(off_btn, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(off_btn, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 
 led0 = 22
@@ -13,7 +13,7 @@ GPIO.setup(led0, GPIO.OUT, initial = GPIO.HIGH)
 
 
 GPIO.add_event_detect(on_btn, GPIO.FALLING, bouncetime = 200) 
-GPIO.add_event_detect(off_btn, GPIO.FALLING, bouncetime = 200) 
+GPIO.add_event_detect(off_btn, GPIO.RISING, bouncetime = 200) 
 
     
 
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     try:
         while True:
             main()
-            time.sleep(20)
+            time.sleep(200)
             
     except KeyboardInterrupt:
         print("Exiting gracefully")
