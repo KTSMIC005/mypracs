@@ -32,7 +32,7 @@ def main():
     if GPIO.event_detected(off_btn):
         #pin 24 is down button. HIGH connected
         print('Off button pressed')
-        GPIO.output(led0, GPIO.HIGH)
+        GPIO.output(led0, GPIO.LOW)
 
 
 
