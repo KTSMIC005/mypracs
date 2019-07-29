@@ -29,8 +29,8 @@ GPIO.setup(led0, GPIO.OUT, initial = GPIO.HIGH)
 GPIO.setup(led1, GPIO.OUT, initial = GPIO.HIGH)
 GPIO.setup(led2, GPIO.OUT, initial = GPIO.HIGH)
 
-GPIO.add_event_detect(up_btn, GPIO.FALLING, bouncetime = 200) 
-GPIO.add_event_detect(down_btn, GPIO.FALLING, bouncetime = 200) 
+GPIO.add_event_detect(up_btn, GPIO.FALLING, bouncetime = 300) 
+GPIO.add_event_detect(down_btn, GPIO.FALLING, bouncetime = 300) 
 
 def display(count):
  
