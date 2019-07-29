@@ -12,8 +12,8 @@ led0 = 22
 GPIO.setup(led0, GPIO.OUT, initial = GPIO.HIGH)
 
 
-GPIO.add_event_detect(on_btn, GPIO.FALLING, bouncetime = 200) 
-GPIO.add_event_detect(off_btn, GPIO.RISING, bouncetime = 200) 
+GPIO.add_event_detect(on_btn, GPIO.FALLING, bouncetime = 20) 
+GPIO.add_event_detect(off_btn, GPIO.RISING, bouncetime = 20) 
 
     
 
@@ -44,7 +44,8 @@ if __name__ == "__main__":
     try:
         while True:
             main()
-            time.sleep(200)
+            print("off button is {}\n on button is {}".format(GPIO.input(on_btn), GPIO.input(off_btn)))
+            time.sleep(.01)
             
     except KeyboardInterrupt:
         print("Exiting gracefully")
