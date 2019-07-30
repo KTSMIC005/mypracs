@@ -76,8 +76,8 @@ def main():
 
     if count ==8:
         count = 0
-    if count <0:
-        count = 0
+    if count == -1:
+        count = 7
     
     display(count)
 
