@@ -52,10 +52,6 @@ def display(count):
     else:
         GPIO.output(led0, GPIO.LOW)
 
-
-
-    
-
     
 
 # Logic that you write
