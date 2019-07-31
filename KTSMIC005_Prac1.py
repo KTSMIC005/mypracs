@@ -72,7 +72,7 @@ def main():
 
     if count ==8:
         count = 0
-    if count == -1:
+    if count == -1:  #Ensuring loops on negative cycle
         count = 7
     
     display(count)
