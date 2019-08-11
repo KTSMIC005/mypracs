@@ -1,14 +1,17 @@
-fp16 unthreaded
-1.349844 ms
-1.234375 ms
-1.248854 ms
-1.242552 ms
-1.230156 ms
+fp16 threaded32
+bin/Prac2_threaded32
+Clock resolution: 1 ns
+0.582291 ms
+bin/Prac2_threaded32
+Clock resolution: 1 ns
+0.677136 ms
+bin/Prac2_threaded32
+Clock resolution: 1 ns
+0.529063 ms
+bin/Prac2_threaded32
+Clock resolution: 1 ns
+0.616614 ms
+bin/Prac2_threaded32
+Clock resolution: 1 ns
+0.529532 ms
 
-fp16 threaded
-1.68052 ms
-1.68771 ms
-1.6662 ms
-1.67776 ms
-3.66693 ms
-3.55776 ms

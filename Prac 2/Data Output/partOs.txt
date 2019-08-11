@@ -1,15 +1,17 @@
-fp16 unthreaded
-Time: 1.229219 ms
-Time: 1.232396 ms
-Time: 1.228437 ms
-Time: 1.258855 ms
-Time: 1.236615 ms
-
-fp16 threaded
-Time taken for threads to run = 1.75417 ms
-Time taken for threads to run = 1.73156 ms
-Time taken for threads to run = 1.83021 ms
-Time taken for threads to run = 1.73604 ms
-Time taken for threads to run = 1.75641 ms
-Time taken for threads to run = 1.75458 ms
+fp16 threaded32
+bin/Prac2_threaded32
+Clock resolution: 1 ns
+0.685781 ms
+bin/Prac2_threaded32
+Clock resolution: 1 ns
+0.726407 ms
+bin/Prac2_threaded32
+Clock resolution: 1 ns
+0.668229 ms
+bin/Prac2_threaded32
+Clock resolution: 1 ns
+0.755261 ms
+bin/Prac2_threaded32
+Clock resolution: 1 ns
+0.626093 ms
 
