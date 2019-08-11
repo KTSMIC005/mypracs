@@ -6,44 +6,44 @@ make clean
 
 make
 
-echo "fp16 unthreaded" >> partO1.txt
-make run >> partO1.txt
-echo "" >> partO1.txt
+echo "fp16 unthreaded" >> partO0.txt
+make run >> partO0.txt
+echo "" >> partO0.txt
 
-make run >> partO1.txt
-echo "" >> partO1.txt
+make run >> partO0.txt
+echo "" >> partO0.txt
 
-make run >> partO1.txt
-echo "" >> partO1.txt
+make run >> partO0.txt
+echo "" >> partO0.txt
 
-make run >> partO1.txt
-echo "" >> partO1.txt
+make run >> partO0.txt
+echo "" >> partO0.txt
 
-make run >> partO1.txt
-echo "" >> partO1.txt
+make run >> partO0.txt
+echo "" >> partO0.txt
 
-echo "" >> partO1.txt
+echo "" >> partO0.txt
 
 
 
 make threaded
 
-echo "fp16 threaded" >>partO1.txt
-make run_threaded >> partO1.txt
-echo "" >> partO1.txt
+echo "fp16 threaded" >>partO0.txt
+make run_threaded >> partO0.txt
+echo "" >> partO0.txt
 
-make run_threaded >> partO1.txt
-echo "" >> partO1.txt
+make run_threaded >> partO0.txt
+echo "" >> partO0.txt
 
-make run_threaded >> partO1.txt
-echo "" >> partO1.txt
+make run_threaded >> partO0.txt
+echo "" >> partO0.txt
 
-make run_threaded >> partO1.txt
-echo "" >> partO1.txt
+make run_threaded >> partO0.txt
+echo "" >> partO0.txt
 
-make run_threaded >> partO1.txt
-echo "" >> partO1.txt
+make run_threaded >> partO0.txt
+echo "" >> partO0.txt
 
-make run_threaded >> partO1.txt
-echo "" >> partO1.txt
+make run_threaded >> partO0.txt
+echo "" >> partO0.txt
 

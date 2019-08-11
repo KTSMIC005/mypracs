@@ -1,0 +1,148 @@
+fp16 unthreaded
+bin/Prac2
+Running Unthreaded Test
+Precision sizeof 4
+Clock resolution: 1 ns
+Time: 1.334479 ms
+End Unthreaded Test
+
+bin/Prac2
+Running Unthreaded Test
+Precision sizeof 4
+Clock resolution: 1 ns
+Time: 1.235209 ms
+End Unthreaded Test
+
+bin/Prac2
+Running Unthreaded Test
+Precision sizeof 4
+Clock resolution: 1 ns
+Time: 1.230521 ms
+End Unthreaded Test
+
+bin/Prac2
+Running Unthreaded Test
+Precision sizeof 4
+Clock resolution: 1 ns
+Time: 1.224844 ms
+End Unthreaded Test
+
+bin/Prac2
+Running Unthreaded Test
+Precision sizeof 4
+Clock resolution: 1 ns
+Time: 1.237500 ms
+End Unthreaded Test
+
+
+fp16 threaded
+bin/Prac2_threaded
+Clock resolution: 1 ns
+Threads created :-)
+All threads have quit
+Time taken for threads to run = 1.66969 ms
+
+bin/Prac2_threaded
+Clock resolution: 1 ns
+Threads created :-)
+All threads have quit
+Time taken for threads to run = 1.79365 ms
+
+bin/Prac2_threaded
+Clock resolution: 1 ns
+Threads created :-)
+All threads have quit
+Time taken for threads to run = 1.69104 ms
+
+bin/Prac2_threaded
+Clock resolution: 1 ns
+Threads created :-)
+All threads have quit
+Time taken for threads to run = 1.68401 ms
+
+bin/Prac2_threaded
+Clock resolution: 1 ns
+Threads created :-)
+All threads have quit
+Time taken for threads to run = 1.68943 ms
+
+bin/Prac2_threaded
+Clock resolution: 1 ns
+Threads created :-)
+All threads have quit
+Time taken for threads to run = 1.67255 ms
+
+fp16 unthreaded
+bin/Prac2
+Running Unthreaded Test
+Precision sizeof 4
+Clock resolution: 1 ns
+Time: 1.311250 ms
+End Unthreaded Test
+
+bin/Prac2
+Running Unthreaded Test
+Precision sizeof 4
+Clock resolution: 1 ns
+Time: 1.239323 ms
+End Unthreaded Test
+
+bin/Prac2
+Running Unthreaded Test
+Precision sizeof 4
+Clock resolution: 1 ns
+Time: 1.237865 ms
+End Unthreaded Test
+
+bin/Prac2
+Running Unthreaded Test
+Precision sizeof 4
+Clock resolution: 1 ns
+Time: 1.241666 ms
+End Unthreaded Test
+
+bin/Prac2
+Running Unthreaded Test
+Precision sizeof 4
+Clock resolution: 1 ns
+Time: 1.230260 ms
+End Unthreaded Test
+
+
+fp16 threaded
+bin/Prac2_threaded
+Clock resolution: 1 ns
+Threads created :-)
+All threads have quit
+Time taken for threads to run = 1.76828 ms
+
+bin/Prac2_threaded
+Clock resolution: 1 ns
+Threads created :-)
+All threads have quit
+Time taken for threads to run = 1.66656 ms
+
+bin/Prac2_threaded
+Clock resolution: 1 ns
+Threads created :-)
+All threads have quit
+Time taken for threads to run = 1.67182 ms
+
+bin/Prac2_threaded
+Clock resolution: 1 ns
+Threads created :-)
+All threads have quit
+Time taken for threads to run = 1.68703 ms
+
+bin/Prac2_threaded
+Clock resolution: 1 ns
+Threads created :-)
+All threads have quit
+Time taken for threads to run = 1.78734 ms
+
+bin/Prac2_threaded
+Clock resolution: 1 ns
+Threads created :-)
+All threads have quit
+Time taken for threads to run = 1.67781 ms
+
