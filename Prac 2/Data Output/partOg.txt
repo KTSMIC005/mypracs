@@ -1,17 +1,7 @@
 fp16 threaded32
-bin/Prac2_threaded32
-Clock resolution: 1 ns
 0.983698 ms
-bin/Prac2_threaded32
-Clock resolution: 1 ns
 0.985677 ms
-bin/Prac2_threaded32
-Clock resolution: 1 ns
 0.90198 ms
-bin/Prac2_threaded32
-Clock resolution: 1 ns
 1.16583 ms
-bin/Prac2_threaded32
-Clock resolution: 1 ns
 0.627708 ms
 
