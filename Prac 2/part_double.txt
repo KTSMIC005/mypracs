@@ -1,0 +1,15 @@
+doubleunthreaded
+Precision sizeof 8
+Time: 3.744011 ms
+Time: 3.644688 ms
+Time: 3.775781 ms
+Time: 3.666198 ms
+Time: 3.804948 ms
+
+fp16 threaded32
+1.2821 ms
+1.32287 ms
+1.2749 ms
+1.10042 ms
+1.18453 ms
+

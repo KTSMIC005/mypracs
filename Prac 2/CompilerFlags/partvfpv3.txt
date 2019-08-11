@@ -1,0 +1,14 @@
+fp16 unthreaded
+Time: 6.969452 ms
+Time: 7.007599 ms
+Time: 6.824493 ms
+Time: 6.965637 ms
+Time: 6.935120 ms
+
+fp16 threaded32
+1.14443 ms
+0.916458 ms
+0.792448 ms
+0.972291 ms
+1.54578 ms
+

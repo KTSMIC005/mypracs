@@ -1,0 +1,15 @@
+fp16 unthreaded
+Precision sizeof 2
+Time: 6.885529 ms
+Time: 6.908417 ms
+Time: 6.912231 ms
+Time: 6.961823 ms
+Time: 6.877899 ms
+
+fp16 threaded32
+0.904531 ms
+0.896458 ms
+1.04031 ms
+0.878958 ms
+1.92859 ms
+
