@@ -1,4 +1,4 @@
-#include "Prac2_threaded.h"
+#include "Prac2_threaded8.h"
 
 float result [SAMPLE_COUNT];
 
@@ -32,7 +32,7 @@ int main(int argc, char** argv){
 
     // Printing stuff is a critical section...
     pthread_mutex_lock(&Mutex);
-    printf("Threads created :-)\n");
+ //   printf("Threads created :-)\n");
     pthread_mutex_unlock(&Mutex);
 
     tic();
@@ -47,8 +47,8 @@ int main(int argc, char** argv){
 
   // No more active threads, so no more critical sections required
 
-  printf("All threads have quit\n");
-  printf("Time taken for threads to run = %lg ms\n", toc()/1e-3);
+//  printf("All threads have quit\n");
+  printf("%lg ms\n", toc()/1e-3);
 
   return 0;
 }

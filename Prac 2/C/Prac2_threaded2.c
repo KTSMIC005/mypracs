@@ -1,4 +1,4 @@
-#include "Prac2_threaded.h"
+#include "Prac2_threaded2.h"
 
 float result [SAMPLE_COUNT];
 
