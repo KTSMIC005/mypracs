@@ -1,0 +1,34 @@
+fp16 unthreaded
+bin/Prac2
+Clock resolution: 1 ns
+1.236093 ms
+bin/Prac2
+Clock resolution: 1 ns
+1.364427 ms
+bin/Prac2
+Clock resolution: 1 ns
+1.231458 ms
+bin/Prac2
+Clock resolution: 1 ns
+1.220313 ms
+bin/Prac2
+Clock resolution: 1 ns
+1.233125 ms
+
+fp16 threaded32
+bin/Prac2_threaded32
+Clock resolution: 1 ns
+0.572917 ms
+bin/Prac2_threaded32
+Clock resolution: 1 ns
+0.489427 ms
+bin/Prac2_threaded32
+Clock resolution: 1 ns
+0.594167 ms
+bin/Prac2_threaded32
+Clock resolution: 1 ns
+0.704375 ms
+bin/Prac2_threaded32
+Clock resolution: 1 ns
+0.524167 ms
+
