@@ -35,7 +35,7 @@ void initGPIO(void){
 	RTC = wiringPiI2CSetup(RTCAddr); //Set up the RTC
 	
 	//Set up the LEDS
-	for(int i; i < sizeof(LEDS)/sizeof(LEDS[0]); i++){ !TODO Need to set which pins we are going to use
+	for(int i; i < sizeof(LEDS)/sizeof(LEDS[0]); i++){ 
 	    pinMode(LEDS[i], OUTPUT);
 	}
 	
@@ -43,7 +43,8 @@ void initGPIO(void){
 	//Write your logic here
 	!TODO 
 	pinMode(SEC, OUTPUT);
-	softPwmCreate(SEC, 1, 100) // !Check if this is supposed to go from 1 to 100 % or if it is HZ
+	int softPwmCreate(SEC, 0, 60) // (pin, initial, range)
+	
 	printf("LEDS done\n");
 	
 	//Set up the Buttons
@@ -55,6 +56,8 @@ void initGPIO(void){
 	//Attach interrupts to Buttons
 	//Write your logic here
 	!TODO
+
+
 	printf("BTNS done\n");
 	printf("Setup done\n");
 }
@@ -108,7 +111,19 @@ int hFormat(int hours){
  * Turns on corresponding LED's for hours
  */
 void lightHours(int units){
-	// Write your logic to light up the hour LEDs here	
+	// Write your logic to light up the hour LEDs here
+
+	// four Hour leds: 8 4 2 1
+	for (int i = 3; i >=0; i--){
+		if(units%2){
+			digitalWrite(LEDS[i],HIGH);
+		} else{
+			digitalWrite(LEDS[i], LOW);
+		}
+		units = units/2;
+	}
+	// printf("HOUR value changed to %d %d %d %d", !State of LEDS[0],LEDS[1], LEDS[2], LEDS[3]);
+
 }
 
 /*
@@ -116,6 +131,19 @@ void lightHours(int units){
  */
 void lightMins(int units){
 	//Write your logic to light up the minute LEDs here
+
+	// five minute leds (LED[4] - LED[8])
+	for (int i = 8; i >=4; i--){
+		if(units%2){
+			digitalWrite(LEDS[i],HIGH);
+			printf("Turning on LED %d", LEDS[i]);
+		} else{
+			digitalWrite(LEDS[i], LOW);
+			printf("Turning off LED %d", LEDS[i]);
+		}
+		units = units/2;
+	}
+	// printf("Minute value changed to %d %d %d %d %d", !State of LEDS[4],LEDS[5], LEDS[6], LEDS[7], LEDS[8]);
 }
 
 /*
@@ -125,6 +153,10 @@ void lightMins(int units){
  */
 void secPWM(int units){
 	// Write your logic here
+	if(units > 59){
+		units -=60;
+		printf("Seconds were above 59, reducing to %d");
+	}
 }
 
 /*
