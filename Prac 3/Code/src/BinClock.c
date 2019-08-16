@@ -15,7 +15,7 @@
 
 #include "BinClock.h"
 #include "CurrentTime.h"
-#include "CurrentTime.c" // check if this is going to be needed
+// #include "CurrentTime.c" // check if this is going to be needed
 
 static int b_write =0b11011110;
 static int b_read = 0b11011111;
@@ -45,7 +45,7 @@ void initGPIO(void){
 	
 	//Set Up the Seconds LED for PWM
 	//Write your logic here
-	!TODO 
+	// !TODO 
 	pinMode(SEC, OUTPUT);
 	int softPwmCreate(SEC, 0, 60) // (pin, initial, range)
 	
@@ -59,7 +59,7 @@ void initGPIO(void){
 	
 	//Attach interrupts to Buttons
 	//Write your logic here
-	!TODO
+	wiringPiISR (BTNS[1], INT_EDGE_FALLING,  void (*function)(void)) ; !TODO
 
 
 	printf("BTNS done\n");
@@ -84,9 +84,23 @@ int main(void){
 	for (;;){
 		//Fetch the time from the RTC
 		//Write your logic here
-		
+
+
+		//Say we're reading
+		// write address
+		// listen for an answer
+
+
+
+
+
 		//Function calls to toggle LEDs
 		//Write your logic here
+		!ToDO 
+		// update pwm with new seconds
+		// update minutes
+		// update hours
+		
 		
 		// Print out the time we have stored on our RTC
 		printf("The current time is: %x:%x:%x\n", hours, mins, secs);
@@ -161,6 +175,7 @@ void secPWM(int units){
 		units -=60;
 		printf("Seconds were above 59, reducing to %d");
 	}
+	softPwmWrite(SEC, units);
 }
 
 /*
@@ -236,7 +251,10 @@ void hourInc(void){
 		//Write hours back to the RTC
 
 		hours ++;
-		if (hours >12)
+		if (hours >12){
+			hours -=12;
+		}
+
 
 
 
