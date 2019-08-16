@@ -15,6 +15,10 @@
 
 #include "BinClock.h"
 #include "CurrentTime.h"
+#include "CurrentTime.c" // check if this is going to be needed
+
+static int b_write =0b11011110;
+static int b_read = 0b11011111;
 
 //Global variables
 int hours, mins, secs;
@@ -230,6 +234,12 @@ void hourInc(void){
 		//Fetch RTC Time
 		//Increase hours by 1, ensuring not to overflow
 		//Write hours back to the RTC
+
+		hours ++;
+		if (hours >12)
+
+
+
 	}
 	lastInterruptTime = interruptTime;
 }
