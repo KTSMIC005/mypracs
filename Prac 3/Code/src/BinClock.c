@@ -12,13 +12,14 @@
 #include <wiringPiI2C.h>
 #include <stdio.h> //For printf functions
 #include <stdlib.h> // For system functions
+#include <softPwm.h>
 
 #include "BinClock.h"
 #include "CurrentTime.h"
 // #include "CurrentTime.c" // check if this is going to be needed
 
-static int b_write =0b11011110;
-static int b_read = 0b11011111;
+//static int b_write =0b11011110;
+//static int b_read = 0b11011111;
 
 //Global variables
 int hours, mins, secs;
@@ -47,7 +48,7 @@ void initGPIO(void){
 	//Write your logic here
 	// !TODO 
 	pinMode(SEC, OUTPUT);
-	int softPwmCreate(SEC, 0, 60) // (pin, initial, range)
+	softPwmCreate(SEC, 0, 60); // (pin, initial, range)
 	
 	printf("LEDS done\n");
 	
@@ -59,7 +60,7 @@ void initGPIO(void){
 	
 	//Attach interrupts to Buttons
 	//Write your logic here
-	wiringPiISR (BTNS[1], INT_EDGE_FALLING,  void (*function)(void)) ; !TODO
+	//wiringPiISR (BTNS[1], INT_EDGE_FALLING,  void (*function)(void)) ; 
 
 
 	printf("BTNS done\n");
@@ -186,7 +187,7 @@ void secPWM(int units){
 	// Write your logic here
 	if(units > 59){
 		units -=60;
-		printf("Seconds were above 59, reducing to %d");
+		printf("Seconds were above 59, reducing to %d", units);
 	}
 	softPwmWrite(SEC, units);
 }
