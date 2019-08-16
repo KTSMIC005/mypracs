@@ -87,8 +87,15 @@ int main(void){
 
 
 		//Say we're reading
-		// write address
+		// write HOUR address
 		// listen for an answer
+		hours = wiringPiI2CReadReg8 (RTCAddr, HOUR); // might need to use b_read and not RTCAddr
+		printf("Hours read in as to %d", hours);
+		mins = wiringPiI2CReadReg8(RTCAddr, MIN);
+		printf("Mins read as %d", mins);
+		secs = wiringPiI2CReadReg8(RTCAddr, SEC);
+		printf("Seconds read in as %d",secs);
+
 
 
 
@@ -96,10 +103,16 @@ int main(void){
 
 		//Function calls to toggle LEDs
 		//Write your logic here
-		!ToDO 
+
+		// !ToDO 
 		// update pwm with new seconds
 		// update minutes
 		// update hours
+		lightHours(hours); printf("Hour leds lit");
+		lightMins(mins); printf("Mins LEDs lit");
+		secPWM(secs);
+
+		
 		
 		
 		// Print out the time we have stored on our RTC
