@@ -4,15 +4,22 @@
 
 // Function definitions
 int hFormat(int hours);
+
 void lightHours(int units);
 void lightMins(int units);
+
 int hexCompensation(int units);
 int decCompensation(int units);
+
 void initGPIO(void);
+
 void secPWM(int units);
+
 void hourIncrement(void);
 void minuteIncrement(void);
+
 void toggleTime(void);
+void setCurrentTime(void);
 
 // define constants
 const char RTCAddr  = 0x6f;     // Unique I2C Address for RTC

@@ -51,26 +51,28 @@ int main(void) {
 	printf("Running main().\n");
 	initGPIO();
 																// Set random time (3:04PM)
-	wiringPiI2CWriteReg8(RTC, HOUR, 0x13 + TIMEZONE);
-	wiringPiI2CWriteReg8(RTC, MIN, 0x4);
-	wiringPiI2CWriteReg8(RTC, SEC, 0x80);
+	//wiringPiI2CWriteReg8(RTC, HOUR, 0x13 + TIMEZONE);
+	//wiringPiI2CWriteReg8(RTC, MIN, 0x4);
+	//wiringPiI2CWriteReg8(RTC, SEC, 0x80);
+	setCurrentTime();
 
 	for (;;) {													// Main recursive loop
+		fputs("\033c", stdout);									// Clear the print buffer
 																// INPUT
 		hours = wiringPiI2CReadReg8(RTC, HOUR); 					// Read the HOUR register from RTC
-		printf("Read %d hours.\n", hours);
+		printf("Read %x hours.\n", hours);
 
 		mins = wiringPiI2CReadReg8(RTC, MIN); 						// Read the MIN register from RTC
-		printf("Read %d minutes.\n", mins);
+		printf("Read %x minutes.\n", mins);
 
 		secs = (wiringPiI2CReadReg8(RTC, SEC) & (~0x80)); 			// Read the SEC register from RTC
-		printf("Read %d seconds.\n", secs);
+		printf("Read %x seconds.\n", secs);
 																// OUTPUT
 		lightHours(hours); 											// Update Hours LED Output
 		printf("Updated LED's for Hours.\n");
 
 		lightMins(mins);
-		printf("Updated LED's for Minutes.");						// Update Minutes LED Output
+		printf("Updated LED's for Minutes.\n");						// Update Minutes LED Output
 
 		secPWM(secs); 												// Update Seconds PWM
 
@@ -222,6 +224,15 @@ void toggleTime(void) {
 	long interruptTime = millis();							// Get the current time
 	if (interruptTime - lastInterruptTime > debounce) {		// If debounce time exceeded
 		lastInterruptTime = interruptTime;					// Reset the debounce
+		setCurrentTime();
+	}
+	lastInterruptTime = interruptTime;
+}
+
+/* 
+ * Update the RTC to the system time
+ */
+void setCurrentTime(){
 		HH = getHours();
 		MM = getMins();
 		SS = getSecs();
@@ -235,6 +246,4 @@ void toggleTime(void) {
 
 		SS = decCompensation(SS);
 		wiringPiI2CWriteReg8(RTC, SEC, 0x80 + SS);			// Maintain the 1st Oscilator bit (0x80)
-	}
-	lastInterruptTime = interruptTime;
 }
