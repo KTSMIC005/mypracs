@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <softPwm.h>
+#include <signal.h>
 
 #include "BinClock.h"
 #include "CurrentTime.h"
@@ -48,12 +49,11 @@ void initGPIO(void) {
 }
 
 int main(void) {
+	signal(SIGINT, cleanup);									//Catch Ctrl-c
+
 	printf("Running main().\n");
 	initGPIO();
-																// Set random time (3:04PM)
-	//wiringPiI2CWriteReg8(RTC, HOUR, 0x13 + TIMEZONE);
-	//wiringPiI2CWriteReg8(RTC, MIN, 0x4);
-	//wiringPiI2CWriteReg8(RTC, SEC, 0x80);
+
 	setCurrentTime();
 
 	for (;;) {													// Main recursive loop
@@ -67,18 +67,24 @@ int main(void) {
 
 		secs = (wiringPiI2CReadReg8(RTC, SEC) & (~0x80)); 			// Read the SEC register from RTC
 		printf("Read %x seconds.\n", secs);
+
+																	// Convert to decimal values
+		hours 	= hexCompensation(hours);
+		mins 	= hexCompensation(mins);
+		secs	= hexCompensation(secs);
+		printf("Time Check: %d:%d:%d\n", hours, mins, secs);
 																// OUTPUT
 		lightHours(hours); 											// Update Hours LED Output
 		printf("Updated LED's for Hours.\n");
-
+																	// Update Minutes LED Output
 		lightMins(mins);
-		printf("Updated LED's for Minutes.\n");						// Update Minutes LED Output
+		printf("Updated LED's for Minutes.\n");						
 
-		secPWM(secs); 												// Update Seconds PWM
+		//secPWM(secs); 												// Update Seconds PWM
 
-		printf("Current Read Time: %x:%x:%x\n", hours, mins, secs);
+		printf("Current Read Time: %d:%d:%d\n", hours, mins, secs);
 
-		delay(100); 												//100ms delay for stability
+		delay(1000); 												//100ms delay for stability
 	}
 	return 0;
 }
@@ -97,11 +103,13 @@ void lightHours(int hours) {
 	for (int i = 3; i >= 0; i--) {						// Decrease through 4 LED's
 		if (hours % 2) {								// If binary 1
 			digitalWrite(HOURS[i], HIGH);
+			printf("Hours[%d] (Pin %d) HIGH.\n", i, HOURS[i]);
 		}
 		else {											// If binary 0
 			digitalWrite(HOURS[i], LOW);
+			printf("Hours[%d] (Pin %d) LOW.\n", i, HOURS[i]);
 		}
-		hours = hours / 2;
+		hours /= 2;
 	}													// Move to next binary digit
 }
 
@@ -112,11 +120,13 @@ void lightMins(int minutes) {
 	for (int i = 4; i >= 0; i--) {						// Decrease through the 5 LED's
 		if (minutes % 2) {								// If binary 1
 			digitalWrite(MINUTES[i], HIGH);
+			printf("Minutes[%d] (Pin %d) HIGH.\n", i, MINUTES[i]);
 		}
 		else {											// If binary 0
 			digitalWrite(MINUTES[i], LOW);
+			printf("Minutes[%d] (Pin %d) LOW.\n", i, MINUTES[i]);
 		}
-		minutes = minutes / 2;							// Move to next binary digit
+		minutes /= 2;									// Move to next binary digit
 	}
 }
 
@@ -127,7 +137,7 @@ void lightMins(int minutes) {
  */
 void secPWM(int seconds){
 	seconds %= 60;										// Configured to 60 (60 seconds) range
-	softPwmWrite(SEC, seconds);							// Pass on PWM command
+	softPwmWrite(SECONDS, seconds);							// Pass on PWM command
 }
 
 /*
@@ -197,7 +207,7 @@ void hourIncrement(void){
 
 		hours++;
 		hours %= 12;
-		wiringPiI2CWriteReg8(RTC, HOUR, hours);
+		wiringPiI2CWriteReg8(RTC, HOUR, decCompensation(hours));
 	}
 }
 
@@ -214,7 +224,7 @@ void minuteIncrement(void){
 
 		mins++;
 		mins %= 60;
-		wiringPiI2CWriteReg8(RTC, MIN, mins);
+		wiringPiI2CWriteReg8(RTC, MIN, decCompensation(mins));
 	}
 }
 
@@ -246,4 +256,17 @@ void setCurrentTime(){
 
 		SS = decCompensation(SS);
 		wiringPiI2CWriteReg8(RTC, SEC, 0x80 + SS);			// Maintain the 1st Oscilator bit (0x80)
+}
+
+void cleanup(int i){
+																	// Set all outputs to LOW
+	for(int i=0 ; i < sizeof(LEDS) / sizeof(LEDS[0]) ; i++){
+		digitalWrite(LEDS[i], LOW);
+	}
+																	// Set up each LED to Input (High Impedance)
+	for (int i = 0 ; i < sizeof(LEDS) / sizeof(LEDS[0]); i++) {
+		pinMode(LEDS[i], INPUT);
+	}
+	printf("Cleaned up.\n");
+	exit(0);
 }

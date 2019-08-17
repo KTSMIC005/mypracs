@@ -12,6 +12,7 @@ int hexCompensation(int units);
 int decCompensation(int units);
 
 void initGPIO(void);
+void cleanup(int);
 
 void secPWM(int units);
 
@@ -29,9 +30,9 @@ const char HOUR     = 0x02;     // 0x01 is the Hours Register Address
 const char TIMEZONE = 2;        // +02H00 GMT (South Africa)
 
 // define pins
-const int LEDS[]    =  {0, 2, 3, 25, 7, 22, 21, 27, 4, 6};  // WiringPi Numbering Scheme
-const int HOURS[]   =  {0, 2, 3, 25};                       // H0-H3
-const int MINUTES[] =  {7, 22, 21, 27, 4, 6};               // M0-M4
+const int LEDS[]    =  {7, 0, 2, 3, 21, 22, 23, 25, 26, 27};  // WiringPi Numbering Scheme
+const int HOURS[]   =  {7, 0, 2, 3};                       // H0-H3
+const int MINUTES[] =  {21, 22, 23, 25, 26, 27};               // M0-M5
  
-const int SECONDS = 1;                                         // PWM Pin     
-const int BTNS[] = {5,30};                                  // B0-B1 for user input
+const int SECONDS = 1;                                      // PWM Pin     
+const int BTNS[] = {4,5};                                   // B0-B1 for user input
