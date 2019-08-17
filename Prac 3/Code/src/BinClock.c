@@ -31,8 +31,8 @@ void initGPIO(void) {
 		pinMode(LEDS[i], OUTPUT);
 	}
 																
-	pinMode(SEC, OUTPUT);										// Special case for PWM on Seconds LED
-	softPwmCreate(SEC, 0, 60); 									// (pin, initial, range)
+	pinMode(SECONDS, OUTPUT);										// Special case for PWM on Seconds LED
+	softPwmCreate(SECONDS, 0, 60); 									// (pin, initial, range)
 
 	printf("Completed LED setup.\n");
 																// Set up the Buttons to input with PUR
@@ -80,11 +80,11 @@ int main(void) {
 		lightMins(mins);
 		printf("Updated LED's for Minutes.\n");						
 
-		//secPWM(secs); 												// Update Seconds PWM
+		secPWM(secs); 												// Update Seconds PWM
 
 		printf("Current Read Time: %d:%d:%d\n", hours, mins, secs);
 
-		delay(1000); 												//100ms delay for stability
+		delay(100); 												//100ms delay for stability
 	}
 	return 0;
 }
@@ -117,7 +117,7 @@ void lightHours(int hours) {
  * Update the Minute LEDs
  */
 void lightMins(int minutes) {
-	for (int i = 4; i >= 0; i--) {						// Decrease through the 5 LED's
+	for (int i = 5; i >= 0; i--) {						// Decrease through the 6 LED's
 		if (minutes % 2) {								// If binary 1
 			digitalWrite(MINUTES[i], HIGH);
 			printf("Minutes[%d] (Pin %d) HIGH.\n", i, MINUTES[i]);
@@ -137,18 +137,11 @@ void lightMins(int minutes) {
  */
 void secPWM(int seconds){
 	seconds %= 60;										// Configured to 60 (60 seconds) range
-	softPwmWrite(SECONDS, seconds);							// Pass on PWM command
+	softPwmWrite(SECONDS, seconds);						// Pass on PWM command
 }
 
-/*
- * hexCompensation
- * This function may not be necessary if you use bit-shifting rather than decimal checking for writing out time values
- */
+//Converts from Hexidecimal to Decimal format for reading from I2C
 int hexCompensation(int units){
-	/*Convert HEX or BCD value to DEC where 0x45 == 0d45 
-	  This was created as the lighXXX functions which determine what GPIO pin to set HIGH/LOW
-	  perform operations which work in base10 and not base16 (incorrect logic) 
-	*/
 	int unitsU = units % 0x10;
 
 	if (units >= 0x50) {
@@ -169,10 +162,7 @@ int hexCompensation(int units){
 	return units;
 }
 
-/*
- * decCompensation
- * This function "undoes" hexCompensation in order to write the correct base 16 value through I2C
- */
+//Converts from Decimal to hexidecimal format for writing to I2C
 int decCompensation(int units){
 	int unitsU = units % 10;
 
@@ -199,15 +189,17 @@ int decCompensation(int units){
  * Fetch the hour value off the RTC, increase it by 1, and write back
  */
 void hourIncrement(void){
-	long interruptTime = millis();							//Debounce
+	long interruptTime = millis();									//Debounce
 
 	if (interruptTime - lastInterruptTime > debounce) {
 		lastInterruptTime = interruptTime;
 		printf("Interrupt 1 triggered, %x\n", hours);
 
+		hours = hexCompensation(wiringPiI2CReadReg8(RTC, HOUR)); 	// Read the HOUR register from RTC
+
 		hours++;
 		hours %= 12;
-		wiringPiI2CWriteReg8(RTC, HOUR, decCompensation(hours));
+		wiringPiI2CWriteReg8(RTC, HOUR, decCompensation(hours));	// Write the updated time back to RTC
 	}
 }
 
@@ -216,27 +208,18 @@ void hourIncrement(void){
  * Fetch the minute value off the RTC, increase it by 1, and write back
  */
 void minuteIncrement(void){
-	long interruptTime = millis();
+	long interruptTime = millis();									// Debounce
 
 	if (interruptTime - lastInterruptTime > debounce){
 		lastInterruptTime = interruptTime;
 		printf("Interrupt 2 triggered, %x\n", mins);
 
+		mins = hexCompensation(wiringPiI2CReadReg8(RTC, MIN)); 		// Read the MIN register from RTC
+
 		mins++;
 		mins %= 60;
-		wiringPiI2CWriteReg8(RTC, MIN, decCompensation(mins));
+		wiringPiI2CWriteReg8(RTC, MIN, decCompensation(mins));		// Write updated time back to MIN
 	}
-}
-
-//This interrupt will fetch current time from another script and write it to the clock registers
-//This functions will toggle a flag that is checked in main
-void toggleTime(void) {
-	long interruptTime = millis();							// Get the current time
-	if (interruptTime - lastInterruptTime > debounce) {		// If debounce time exceeded
-		lastInterruptTime = interruptTime;					// Reset the debounce
-		setCurrentTime();
-	}
-	lastInterruptTime = interruptTime;
 }
 
 /* 
