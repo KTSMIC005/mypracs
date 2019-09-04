@@ -9,7 +9,6 @@ int buffer_location = 0;
 bool bufferReading = 0;                     // Using to switch between column 0 and 1 - the first column
 bool threadReady = false;                   // Using to finish writing the first column at the start of the song, before the column is played
 
-
                                             // Interrupts.
                                             // Don't forget to use debouncing.
 void play_pause_isr(void){
@@ -19,8 +18,6 @@ void play_pause_isr(void){
 void stop_isr(void){
                                             // TODO
 }
-
-
                                             
 int setup_gpio(void){                      // Setup Function. Called once.
     
@@ -66,7 +63,7 @@ if(setup_gpio()==-1){                                           // Call the setu
      * Read https://docs.oracle.com/cd/E19455-01/806-5257/attrib-16/index.html
      */ 
     
-                                                                // Write your logic here
+                                                                // Initialize threads
 	pthread_attr_t tattr;
     pthread_t thread_id;
     int newprio = 99;
@@ -91,14 +88,13 @@ if(setup_gpio()==-1){                                           // Call the setu
      * Don't forget to check if you have pause set or not when writing to the buffer
      * 
      */
-     
-                                                                // Open the file
+                                                                
     char ch;
     FILE *filePointer;
-    printf("%s\n", FILENAME);
+    printf("%s\n", FILENAME);                                   // Opening FILENAME
     filePointer = fopen(FILENAME, "r");                         // Open in Read mode
 
-    if (filePointer == NULL) {
+    if (filePointer == NULL) {                                  // If file not found
         perror("Error while opening the file.\n");
         exit(EXIT_FAILURE);
     }
