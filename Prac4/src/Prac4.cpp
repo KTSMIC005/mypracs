@@ -9,8 +9,7 @@ int buffer_location = 0;
 bool bufferReading = 0;                     // Using to switch between column 0 and 1 - the first column
 bool threadReady = false;                   // Using to finish writing the first column at the start of the song, before the column is played
 
-                                            // Interrupts.
-                                            // Don't forget to use debouncing.
+                                            // Interrupts. Use hardware debouncing
 void play_pause_isr(void){
                                             // TODO
 }
@@ -19,11 +18,19 @@ void stop_isr(void){
                                             // TODO
 }
                                             
-int setup_gpio(void){                      // Setup Function. Called once.
-    
-    wiringPiSetup();                        // Set up WiringPi
-                                            // TODO set up buttons
-                                            // TODO set up the SPI interface
+int setup_gpio(void){                                               // Setup Function. Called once.
+    printf("Running init_gpio().\n");
+    wiringPiSetup();                                                // Set up WiringPi
+                                                                    
+   	for (int j = 0 ; j < sizeof(BTNS) / sizeof(BTNS[0]) ; j++) {    // Set up buttons
+		pinMode(BTNS[j], INPUT);
+		//pullUpDnControl(BTNS[j], PUD_UP);                         // Disabled for HW Debouncing
+	}
+
+    wiringPiISR(PAUSE_BUTTON,   INT_EDGE_FALLING, &play_pause_isr);
+	wiringPiISR(STOP_BUTTON,    INT_EDGE_FALLING, &stop_isr);
+                                                                    // TODO set up the SPI interface
+
     return 0;
 }
 

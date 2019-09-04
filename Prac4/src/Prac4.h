@@ -11,11 +11,13 @@
 #include <pthread.h>
 #include <iostream>
                                             // Define buttons
-#define PLAY_BUTTON                             // TODO
-#define STOP_BUTTON                             // TODO
-#define BUFFER_SIZE 1000
+#define PAUSE_BUTTON    18                            
+#define STOP_BUTTON     23
+#define BTNS            [PAUSE_BUTTON, STOP_BUTTON]                    
+
+#define BUFFER_SIZE     1000
                                             // SPI Settings
-#define SPI_CHAN                                // TODO
+#define SPI_CHAN    0                           // TODO
 #define SPI_SPEED                               // TODO
 
 #define FILENAME "src/sound_16k_8bit.raw"   // Sound file name
