@@ -31,7 +31,7 @@ void initGPIO(void) {
 		pinMode(LEDS[i], OUTPUT);
 	}
 																
-	pinMode(SECONDS, OUTPUT);										// Special case for PWM on Seconds LED
+											// Special case for PWM on Seconds LED
 	softPwmCreate(SECONDS, 0, 60); 									// (pin, initial, range)
 
 	printf("Completed LED setup.\n");

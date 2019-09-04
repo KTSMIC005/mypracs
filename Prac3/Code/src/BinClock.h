@@ -30,7 +30,7 @@ const char HOUR     = 0x02;     // 0x01 is the Hours Register Address
 const char TIMEZONE = 2;        // +02H00 GMT (South Africa)
 
 // define pins
-const int LEDS[]    =  {21, 22, 23, 25, 7, 2, 3, 4, 5, 6};    // WiringPi Numbering Scheme
+const int LEDS[]    =  {21, 22, 23, 25, 7, 2, 3, 4, 5, 6, 1}; // WiringPi Numbering Scheme
 const int HOURS[]   =  {21, 22, 23, 25};                      // H0-H3
 const int MINUTES[] =  {7, 2, 3, 4, 5, 6};                    // M0-M5
  
