@@ -54,16 +54,13 @@ void *playThread(void *threadargs){
 }
 
 int main(){
-if(setup_gpio()==-1){                                           // Call the setup_gpio function
+    if(setup_gpio()==-1){                                           // Call the setup_gpio function
         return 0;
     }
-    
-    /* Initialize thread with parameters
-     * Set the play thread to have a 99 priority
-     * Read https://docs.oracle.com/cd/E19455-01/806-5257/attrib-16/index.html
-     */ 
-    
-                                                                // Initialize threads
+                                                                    /* Initialize thread with parameters
+                                                                    * Set the play thread to have a 99 priority
+                                                                    * Read https://docs.oracle.com/cd/E19455-01/806-5257/attrib-16/index.html
+                                                                    */ 
 	pthread_attr_t tattr;
     pthread_t thread_id;
     int newprio = 99;
