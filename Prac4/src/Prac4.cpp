@@ -117,7 +117,6 @@ int main(){
 
     int counter = 0;
     int bufferWriting = 0;
-
                                                                 
 	 while( (ch = fgetc(filePointer)) != EOF){                                      // Loop to read from the file
         while( threadReady && bufferWriting == bufferReading && counter == 0){
@@ -128,7 +127,8 @@ int main(){
         buffer[bufferWriting][counter][0] = ;                                           //TODO
                                                                                     //Set next 8 bit packet (bits 8-15)
         buffer[bufferWriting][counter][1] = ;                                           //TODO
-        printf("Saved to Buffer:\t%s\t%s", buffer[bufferWriting][counter][0], buffer[bufferWriting][counter][1])
+        printf("Saved to Buffer:\t%s\t%s\n", buffer[bufferWriting][counter][0], buffer[bufferWriting][counter][1])
+        
         counter++;
         if(counter >= BUFFER_SIZE+1){
             if(!threadReady){
