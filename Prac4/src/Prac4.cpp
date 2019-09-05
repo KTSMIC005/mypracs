@@ -13,12 +13,12 @@ bool            threadReady     = false;                    // Using to finish w
                                                             // Interrupts. Use hardware debouncing
 void play_pause_isr(void){
     playing = !playing;
-    digitalWrite(PAUSE_BUTTON, playing);
+    digitalWrite(PAUSE_LED, playing);
 }
 
 void stop_isr(void){
     stopped = true;
-    digitalWrite(STOP_LED, HIGH);
+    cleanup(0);
 }
 
 bool setup = false;                                            
@@ -59,14 +59,17 @@ int setup_gpio(void){                                               // Setup Fun
                                                         */
 void *playThread(void *threadargs){
     while(!threadReady)                                             // Wait until tread ready
-        continue;
+        delay(1);
     
     digitalWrite(STOP_LED, HIGH);
     while(!stopped){                                                // Only play if not stopped
 		while(!playing)                                             // Suspend playing if paused
             delay(50);                                  
+        printf("Playing.\n");
                                                                     // TODO Write the buffer out to SPI
 		
+
+            
                                                                     // Check if toggle buffers needed
         bufferLocation++;
         if(bufferLocation >= BUFFER_SIZE) {
@@ -74,12 +77,12 @@ void *playThread(void *threadargs){
             bufferReading = !bufferReading;                         // Switches column once it finishes current column
         }
     }
-    digitalWrite(STOP_LED, LOW);
+    printf("Exiting Thread.\n");
     pthread_exit(NULL);
 }
 
 void play_audio(){
-                                                                    //TODO
+                                                                    //TODO (maybe)
 }
 
 int main(){
@@ -87,6 +90,9 @@ int main(){
     if(setup_gpio()==-1){                                           // Call the setup_gpio function
         return 0;
     }
+
+    digitalWrite(PAUSE_LED  , HIGH);                                //By default indicate playing
+    digitalWrite(STOP_BUTTON, HIGH);
                                                                     /* Initialize thread with parameters
                                                                     * Set the play thread to have a 99 priority
                                                                     * Read https://docs.oracle.com/cd/E19455-01/806-5257/attrib-16/index.html
@@ -129,16 +135,16 @@ int main(){
     int counter = 0;
     int bufferWriting = 0;
                                                                 
-	 while( (ch = fgetc(filePointer)) != EOF){                                      // Loop to read from the file
+	 while((ch = fgetc(filePointer)) != EOF){                           // Loop to read from the file
         while( threadReady && bufferWriting == bufferReading && counter == 0){
                                                                                     // Wait until after it has written to a side,
-            continue;                                                               // and the thread is still reading from the other side
+            delay(1);                                                               // and the thread is still reading from the other side
         }
                                                                                     //Set config bits for first 8 bit packet and OR with upper bits (bits 0-7)
         //buffer[bufferWriting][counter][0] = ;                                           //TODO
                                                                                     //Set next 8 bit packet (bits 8-15)
         //buffer[bufferWriting][counter][1] = ;                                           //TODO
-        printf("Saved to Buffer:\t%d\t%d\n", buffer[bufferWriting][counter][0], buffer[bufferWriting][counter][1]);
+        printf("Saved to Buffer:\t%X\t%X\n", buffer[bufferWriting][counter][0], buffer[bufferWriting][counter][1]);
         
         counter++;
         if(counter >= BUFFER_SIZE+1){
@@ -148,7 +154,6 @@ int main(){
             counter = 0;
             bufferWriting = (bufferWriting+1) % 2;
         }
-
     }
                                                                                     
     fclose(filePointer);                               // Close the file
@@ -156,9 +161,7 @@ int main(){
                                                                                     
 	pthread_join(thread_id, NULL);                     // Join and exit the playthread
     pthread_exit(NULL);
-
-    digitalWrite(STOP_BUTTON, HIGH);
-    return 0;
+    cleanup(0);
 }
 
 void cleanup(int args){
