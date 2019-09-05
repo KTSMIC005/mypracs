@@ -1,4 +1,5 @@
 #include "Prac4.h"
+#include "wiringPi.h"                                       //Used while programming in Windows, otherwise redundant
 
 using namespace std;
 
@@ -25,24 +26,27 @@ int setup_gpio(void){                                               // Setup Fun
     if(setup)                                                       // Prevent multiple setups
         return 0;
     
-    printf("Running init_gpio().\n");
-    wiringPiSetup();                                                // Set up WiringPi
+    printf("Running\tinit_gpio().\n");
+    wiringPiSetupGpio();                                                // Set up WiringPi
                                                                     
-   	for (int j = 0 ; j < sizeof(BTNS) / sizeof(BTNS[0]) ; j++) {    // Set up Buttons
+   	for (unsigned int j = 0 ; j < (sizeof(BTNS) / sizeof(BTNS[0])) ; j++) {    // Set up Buttons
 		pinMode(BTNS[j], INPUT);
 		pullUpDnControl(BTNS[j], PUD_DOWN);                         // PDR for Op-Amp to push
 	}
+
+    printf("Buttons set to input.\n");
 
     wiringPiISR(PAUSE_BUTTON,   INT_EDGE_FALLING, &play_pause_isr);
 	wiringPiISR(STOP_BUTTON,    INT_EDGE_FALLING, &stop_isr);
 
                                                                     //Set up LEDs
-    for(int i=0; i<(sizeof(LEDS)/sizeof(LEDS[0])); i++)){
+    for(unsigned int i=0 ; i < (sizeof(LEDS) / sizeof(LEDS[0])) ; i++){
         pinMode(LEDS[i], OUTPUT);
     }
                                                                     // TODO set up the SPI interface
     
     setup = true;
+    printf("Finished\tinit_gpio().\n\n");
     return 0;
 }
                                                         /* 
@@ -57,6 +61,7 @@ void *playThread(void *threadargs){
     while(!threadReady)                                             // Wait until tread ready
         continue;
     
+    digitalWrite(STOP_LED, HIGH);
     while(!stopped){                                                // Only play if not stopped
 		while(!playing)                                             // Suspend playing if paused
             delay(50);                                  
@@ -69,10 +74,16 @@ void *playThread(void *threadargs){
             bufferReading = !bufferReading;                         // Switches column once it finishes current column
         }
     }
+    digitalWrite(STOP_LED, LOW);
     pthread_exit(NULL);
 }
 
+void play_audio(){
+                                                                    //TODO
+}
+
 int main(){
+    signal(SIGINT, cleanup);									    //Catch Ctrl-c
     if(setup_gpio()==-1){                                           // Call the setup_gpio function
         return 0;
     }
@@ -89,7 +100,7 @@ int main(){
     pthread_attr_getschedparam (&tattr, &param);                    /* safe to get existing scheduling param */
     param.sched_priority = newprio;                                 /* set the priority; others are unchanged */
     pthread_attr_setschedparam (&tattr, &param);                    /* setting the new scheduling param */
-    pthread_create(&thread_id, &tattr, playThread, (void *)1);      /* with new priority specified *
+    pthread_create(&thread_id, &tattr, playThread, (void *)1);      /* with new priority specified */
     
                                                                 /*
                                                                 * Read from the file, character by character
@@ -124,10 +135,10 @@ int main(){
             continue;                                                               // and the thread is still reading from the other side
         }
                                                                                     //Set config bits for first 8 bit packet and OR with upper bits (bits 0-7)
-        buffer[bufferWriting][counter][0] = ;                                           //TODO
+        //buffer[bufferWriting][counter][0] = ;                                           //TODO
                                                                                     //Set next 8 bit packet (bits 8-15)
-        buffer[bufferWriting][counter][1] = ;                                           //TODO
-        printf("Saved to Buffer:\t%s\t%s\n", buffer[bufferWriting][counter][0], buffer[bufferWriting][counter][1])
+        //buffer[bufferWriting][counter][1] = ;                                           //TODO
+        printf("Saved to Buffer:\t%d\t%d\n", buffer[bufferWriting][counter][0], buffer[bufferWriting][counter][1]);
         
         counter++;
         if(counter >= BUFFER_SIZE+1){
@@ -148,4 +159,17 @@ int main(){
 
     digitalWrite(STOP_BUTTON, HIGH);
     return 0;
+}
+
+void cleanup(int args){
+																	// Set all outputs to LOW
+	for(unsigned int i = 0 ; i < sizeof(LEDS) / sizeof(LEDS[0]) ; i++){
+		digitalWrite(LEDS[i], LOW);
+	}
+																	// Set up each LED to Input (High Impedance)
+	for(unsigned int i = 0 ; i < sizeof(LEDS) / sizeof(LEDS[0]) ; i++) {
+		pinMode(LEDS[i], INPUT);
+	}
+	printf("Cleaned up.\n");
+	exit(0);
 }
