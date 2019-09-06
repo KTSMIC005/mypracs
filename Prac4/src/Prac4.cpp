@@ -1,5 +1,6 @@
 #include "Prac4.h"
 #include "wiringPi.h"                                       //Used while programming in Windows, otherwise redundant
+#include "wiringPiSPI.h"
 
 using namespace std;
 
@@ -43,7 +44,15 @@ int setup_gpio(void){                                               // Setup Fun
     for(unsigned int i=0 ; i < (sizeof(LEDS) / sizeof(LEDS[0])) ; i++){
         pinMode(LEDS[i], OUTPUT);
     }
+
+    printf("LED's set to output.\n");
                                                                     // TODO set up the SPI interface
+    if(wiringPiSPISetupMode(SPI_CHAN, SPI_SPEED, SPI_MODE) != -1){
+        printf("SPI Connected.\n");
+    }
+    else{
+        return -1;
+    }
     
     setup = true;
     printf("Finished\tinit_gpio().\n\n");
@@ -65,7 +74,7 @@ void *playThread(void *threadargs){
     while(!stopped){                                                // Only play if not stopped
 		while(!playing)                                             // Suspend playing if paused
             delay(50);                                  
-        printf("Playing.\n");
+        //printf("Playing.\n");
                                                                     // TODO Write the buffer out to SPI
 		
 
@@ -134,17 +143,22 @@ int main(){
 
     int counter = 0;
     int bufferWriting = 0;
+
+    //char playConfig = 0*BUFFER + 0*GAIN + 0*SHUTDOWN;                   // Configure no Buffer on Vref, Gain 1, Don't Shutdown
                                                                 
 	 while((ch = fgetc(filePointer)) != EOF){                           // Loop to read from the file
         while( threadReady && bufferWriting == bufferReading && counter == 0){
                                                                                     // Wait until after it has written to a side,
             delay(1);                                                               // and the thread is still reading from the other side
         }
-                                                                                    //Set config bits for first 8 bit packet and OR with upper bits (bits 0-7)
-        //buffer[bufferWriting][counter][0] = ;                                           //TODO
-                                                                                    //Set next 8 bit packet (bits 8-15)
-        //buffer[bufferWriting][counter][1] = ;                                           //TODO
-        printf("Saved to Buffer:\t%X\t%X\n", buffer[bufferWriting][counter][0], buffer[bufferWriting][counter][1]);
+                                                                                    // Set config bits for first 8 bit packet and OR with upper bits (bits 0-7)
+        buffer[bufferWriting][counter][0] = ch>>6;                                  // Add the first 2 bits of ch
+        //buffer[bufferWriting][counter][0] |=playConfig;                           // Add configuration bits (commented as config = 0)
+                                                                                    
+                                                                                    // Set next 8 bit packet (bits 8-15)
+        buffer[bufferWriting][counter][1] = ch<<2;                                  // Add the last 6 bits, last two DNC
+
+        //printf("Saved to Buffer:\t%X\t%X\n", buffer[bufferWriting][counter][0], buffer[bufferWriting][counter][1]);
         
         counter++;
         if(counter >= BUFFER_SIZE+1){

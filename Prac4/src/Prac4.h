@@ -20,12 +20,25 @@ const int PAUSE_LED       = 22;
 const int STOP_LED        = 27;
 const int LEDS[]          = {22, 27};
 
+                                                    // Sound file details
+#define FILENAME "src/sound_16k_8bit.raw"
+#define SAMPLE_RATE         16000
 const int BUFFER_SIZE     = 1000;
                                                     // SPI Settings
-const int SPI_CHAN        = 0;
-//const int SPI_SPEED                                       // TODO
+#define SPI_CHAN            0
+#define SPI_MODE            0
 
-#define FILENAME "src/sound_16k_8bit.raw"           // Sound file name
+#define CHANNELS            1
+#define WIDTH               16
+
+const int compensator     = 8/5;
+
+const int SPI_SPEED       = SAMPLE_RATE*WIDTH*CHANNELS*compensator;                                         // TODO
+
+                                                    // MCP4911 Config Bits
+#define BUFFER              0b0100
+#define GAIN                0b0010
+#define SHUTDOWN            0b0001
 
                                                     //Function definitions
 void play_audio(void);
