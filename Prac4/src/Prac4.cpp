@@ -15,8 +15,8 @@ bool            threadReady     = false;                    // Using to finish w
 void play_pause_isr(void){
     playing = !playing;
     if(!playing){
+        delay(1);
         wiringPiSPIDataRW(SPI_CHAN, (unsigned char*)PAUSE_STATE, sizeof(PAUSE_STATE));
-        printf("Paused.\n");
     }   
     digitalWrite(PAUSE_LED, playing);
 }
@@ -73,7 +73,7 @@ PI_THREAD (play_audio){
         while(!playing)                                                         // Suspend playing if paused
             delay(50); 
         
-        piLock(0);
+        
         //printf("Sending[%d][%d]:\t%X\t%X.\n",
         //    bufferReading,
         //    bufferLocation,
@@ -82,16 +82,18 @@ PI_THREAD (play_audio){
 
         wiringPiSPIDataRW(SPI_CHAN, buffer[bufferReading][bufferLocation], 2);                                  // Manually added 2 for efficiency
             //sizeof(buffer[bufferReading][bufferLocation])/sizeof(buffer[bufferReading][bufferLocation][0]));
-        piUnlock(0);
+        
 
                                                                                 // Check if toggle buffers needed
-        piLock(0);
+        
         bufferLocation++;
+        piLock(0);
         if(bufferLocation >= BUFFER_SIZE) {
             bufferLocation = 0;
             bufferReading = (bufferReading+1) % 2;                              // Switches column once it finishes current column
+            //wiringPiSPISetup(SPI_CHAN, SPI_SPEED);                               // Reset the speed
         }
-    piUnlock(0);
+        piUnlock(0);
     }
     printf("Exiting Thread.\n");
     return(0);
@@ -132,13 +134,12 @@ int main(){
         delay(1);                                                                   // Wait until after it has written to a side,
                                                                                     // and the thread is still reading from the other side
         }
-        piLock(0);                                                                  // Set config bits for first 8 bit packet and OR with upper bits (bits 0-7)
+                                                                                    // Set config bits for first 8 bit packet and OR with upper bits (bits 0-7)
         buffer[bufferWriting][counter][0] = ch>>6;                                  // Add the first 2 bits of ch
         buffer[bufferWriting][counter][0] |=playConfig;                             // Add configuration bits (commented as config = 0)
                                                                                     
                                                                                     // Set next 8 bit packet (bits 8-15)
         buffer[bufferWriting][counter][1] = ch<<2;                                  // Add the last 6 bits, last two D.N.C.
-        piUnlock(0);
         
         counter++;
         piLock(0);

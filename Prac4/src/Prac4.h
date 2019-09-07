@@ -21,19 +21,19 @@ const int STOP_LED        = 27;
 const int LEDS[]          = {22, 27};
 
                                                     // Sound file details
-#define FILENAME "src/sound_16k_8bit.raw"
-#define SAMPLE_RATE         16000
-const int BUFFER_SIZE     = 500;
+#define FILENAME "src/21 Guns.raw"
+#define SAMPLE_RATE         203000
+const int BUFFER_SIZE     = 100000;
                                                     // SPI Settings
 #define SPI_CHAN            0
 #define SPI_MODE            0
 
-#define CHANNELS            1
+#define CHANNELS            2
 #define WIDTH               16
 
-const int compensator     = 8/5;
+const int compensator     = 5/5;
 
-const int SPI_SPEED       = SAMPLE_RATE*WIDTH*CHANNELS*compensator;                                         // TODO
+const int SPI_SPEED       = SAMPLE_RATE*WIDTH*CHANNELS*compensator;
 #define LDAC                25
 
                                                     // MCP4911 Config Bits
