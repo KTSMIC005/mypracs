@@ -47,6 +47,7 @@ const int SPI_SPEED       = SAMPLE_RATE*WIDTH*CHANNELS*compensator;
 void stop_audio(void);
 int setup_gpio(void);
 int main(void);
+unsigned char * prepValue(float);
 void cleanup(int);
 
 #endif
