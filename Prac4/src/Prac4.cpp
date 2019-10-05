@@ -38,17 +38,14 @@ int setup_gpio(void){                                                           
 		pinMode(BTNS[j], INPUT);
 		pullUpDnControl(BTNS[j], PUD_DOWN);                                     // PDR for Op-Amp to push
 	}
-
     printf("Buttons set to input.\n");
 
     wiringPiISR(PAUSE_BUTTON,   INT_EDGE_FALLING, &play_pause_isr);
 	wiringPiISR(STOP_BUTTON,    INT_EDGE_FALLING, &stop_isr);
-
                                                                                 //Set up LEDs
     for(unsigned int i=0 ; i < (sizeof(LEDS) / sizeof(LEDS[0])) ; i++){
         pinMode(LEDS[i], OUTPUT);
     }
-
     printf("LED's set to output.\n");
                                                                                 // Set up the SPI interface
     if(wiringPiSPISetup(SPI_CHAN, SPI_SPEED) != -1){                            // Defaults to Mode 0
@@ -72,26 +69,15 @@ PI_THREAD (play_audio){
     while(!stopped){                                                            // Only play if not stopped
         while(!playing)                                                         // Suspend playing if paused
             delay(50); 
-        
-        
-        //printf("Sending[%d][%d]:\t%X\t%X.\n",
-        //    bufferReading,
-        //    bufferLocation,
-        //    buffer[bufferReading][bufferLocation][0],
-        //    buffer[bufferReading][bufferLocation][1]);
 
-        wiringPiSPIDataRW(SPI_CHAN, buffer[bufferReading][bufferLocation], 2);                                  // Manually added 2 for efficiency
-            //sizeof(buffer[bufferReading][bufferLocation])/sizeof(buffer[bufferReading][bufferLocation][0]));
-        
+        wiringPiSPIDataRW(SPI_CHAN, buffer[bufferReading][bufferLocation], 2);                                  // Manually added 2 for efficiency     
 
                                                                                 // Check if toggle buffers needed
-        
         bufferLocation++;
         piLock(0);
         if(bufferLocation >= BUFFER_SIZE) {
             bufferLocation = 0;
             bufferReading = (bufferReading+1) % 2;                              // Switches column once it finishes current column
-            //wiringPiSPISetup(SPI_CHAN, SPI_SPEED);                               // Reset the speed
         }
         piUnlock(0);
     }
