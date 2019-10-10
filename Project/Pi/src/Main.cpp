@@ -2,16 +2,14 @@
 #include <string.h>
 #include <errno.h>
 
-#include <wiringPi.h>
-#include <wiringSerial.h>
+#include "wiringPi.h"
+#include "wiringSerial.h"
 
 int main ()
 {
   int fd ;
-  int count ;
-  unsigned int nextTime ;
 
-  if ((fd = serialOpen ("/dev/ttyAMA0", 115200)) < 0)
+  if ((fd = serialOpen ("/dev/ttyS0", 9600)) < 0)
   {
     fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno)) ;
     return 1 ;
@@ -23,28 +21,14 @@ int main ()
     return 1 ;
   }
 
-  nextTime = millis () + 300 ;
+  delay(3);
 
-  for (count = 0 ; count < 256 ; )
-  {
-    if (millis () > nextTime)
-    {
-      printf ("\nOut: %3d: ", count) ;
-      fflush (stdout) ;
-      serialPutchar (fd, count) ;
-      nextTime += 300 ;
-      ++count ;
-    }
+  serialPutchar(fd, 9);
+  //serialPutchar(fd, 10);
 
-    delay (3) ;
-
-    while (serialDataAvail (fd))
-    {
+  while (serialDataAvail (fd)){
       printf (" -> %3d", serialGetchar (fd)) ;
-      fflush (stdout) ;
-    }
-  }
+  }  
 
-  printf ("\n") ;
   return 0 ;
 }
