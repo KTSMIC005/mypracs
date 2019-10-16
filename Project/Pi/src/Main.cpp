@@ -1,34 +1,47 @@
 #include <stdio.h>
-#include <string.h>
-#include <errno.h>
+#include <stdlib.h>
 
-#include "wiringPi.h"
-#include "wiringSerial.h"
+#include "STMComms.h"
 
-int main ()
-{
-  int fd ;
+void updateVariables(void);
 
-  if ((fd = serialOpen ("/dev/ttyS0", 9600)) < 0)
-  {
-    fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno)) ;
-    return 1 ;
-  }
+Time rtcTime;
+Time sysTime;
+float H;
+float T;
+float L;
+float D;
+bool  a;
 
-  if (wiringPiSetup () == -1)
-  {
-    fprintf (stdout, "Unable to start wiringPi: %s\n", strerror (errno)) ;
-    return 1 ;
-  }
 
-  delay(3);
-
-  serialPutchar(fd, 9);
-  //serialPutchar(fd, 10);
-
-  while (serialDataAvail (fd)){
-      printf (" -> %3d", serialGetchar (fd)) ;
-  }  
-
-  return 0 ;
+int main(void){
+    wiringPiSetup();
+    STMCommsInit();
+    setCurrentTime();
+    //float X;
+    while(true){
+        //updateVariables();
+        //printf("%d\t:%d\t:%d\t%d\t:%d\t:%d\t%.2f\t%.2f\t%.2f\t%.2f\t%d\n", rtcTime.hours, rtcTime.minutes, rtcTime.seconds,
+        //                                                                    sysTime.hours, sysTime.minutes, sysTime.seconds,
+        //                                                                    H, T, L, D, a);
+        
+        //X = getTemperature();
+        //printf("%.2f\n", X);
+        a = getAlarm();
+        printf("%d\n", a);
+        delay(100);
+    }
+}
+void updateVariables(){
+    rtcTime = getRTCTime();
+    sysTime = getSysTime();
+    H = getHumidity();
+    delay(50);
+    T = getTemperature();
+    delay(50);
+    L = getLDR();
+    delay(50);
+    D = getDAC();
+    delay(50);
+    a = getAlarm();
 }
